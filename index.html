@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<?!= include('css'); ?>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body onload="populateTable()">
+<table style="width:60%;" align="center" id="table">
+<caption><h1>Daily Tasks</h1></caption>
+  <tr>
+    <th>Complete?</th>
+    <th>Expected Completion Time</th>
+    <th>Task Name</th>
+    <th>Resources</th>
+  </tr>
+  
+  <tr id=2>
+    <td style="text-align:center">
+      <input class="checkbutton" type="checkbox" onClick=google.script.run.withSuccessHandler(completionAlert).alertInfo(2);google.script.run.withSuccessHandler(populateTable).completeTask(2)>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+  </tr>
+  
+  <tr id=3>
+    <td style="text-align:center">
+     <input class="checkbutton" type="checkbox" onClick=google.script.run.withSuccessHandler(completionAlert).alertInfo(3);google.script.run.withSuccessHandler(populateTable).completeTask(3)>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+  </tr>
+  
+  <tr id=4>
+    <td style="text-align:center">
+      <input class="checkbutton" type="checkbox" onClick=google.script.run.withSuccessHandler(completionAlert).alertInfo(4);google.script.run.withSuccessHandler(populateTable).completeTask(4)>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+  </tr>
+  
+  <tr id=5>
+    <td style="text-align:center">
+      <input class="checkbutton" type="checkbox" onClick=google.script.run.withSuccessHandler(completionAlert).alertInfo(5);google.script.run.withSuccessHandler(populateTable).completeTask(5)>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+  </tr>
+  
+  <tr id=6>
+    <td style="text-align:center">
+      <input class="checkbutton" type="checkbox" onClick=google.script.run.withSuccessHandler(completionAlert).alertInfo(6);google.script.run.withSuccessHandler(populateTable).completeTask(6)>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+  </tr>
+  
+  <tr id=7>
+    <td style="text-align:center">
+      <input class="checkbutton" type="checkbox" onClick=google.script.run.withSuccessHandler(completionAlert).alertInfo(7);google.script.run.withSuccessHandler(populateTable).completeTask(7)>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+  </tr>
+  
+</table>
+<div align="center" style="padding: 5px">
+<button type="button" style="width:25%; padding: 10px" onclick="populateTable()">Click to Refresh</button>
+</div>
+</body>
+<footer>
+<p style="text-align:center">Created by Tim Wick</p>
+</footer>
+<script> 
+function populateTable(){ // function to call scripts to populate the web app table with content from the spreadsheet
+  google.script.run.withSuccessHandler(populate).getTableContents(); // Runs populate with the return value from getTableContents
+  setTimeout(function(){populateTable()},60000); // Re-runs function every 60 seconds to update information
+  }
+  
+function populate(taskList){ // Function to populate the HTML table. Takes in a JSON string of data
+   taskList = JSON.parse(taskList); // Un-parses the JSON string to a javascript array
+   var table = document.getElementById("table"); // Gets the HTML table by ID
+     for(var i = 1; i<table.rows.length; i++){ // Loops over table rows
+       for(var j = 1; j<table.rows[i].cells.length; j++){ // Loops over cells in the row
+         table.rows[i].cells[j].innerHTML = taskList[i-1][j-1]; // Sets the cells to corresponding valus from the array of data
+       }
+     }
+   var checkBoxes = document.getElementsByClassName("checkbutton") // Gets a list of button elements
+   for(i in checkBoxes){ // Loops over buttons
+     checkBoxes[i].checked = false; // Resets buttons to unchecked
+    }
+}
+
+function completionAlert(taskString){ // Function to create an alert when a task is checked. Takes in a string.
+  alert(taskString); // Generates alert with the string passed to function
+} 
+</script>
+
+</html>
