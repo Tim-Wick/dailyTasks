@@ -120,6 +120,11 @@ function populate(taskList){ // Function to populate the HTML table. Takes in a 
 function completionAlert(taskString){ // Function to create an alert when a task is checked. Takes in a string.
   alert(taskString); // Generates alert with the string passed to function
 } 
+  
+function alreadyCompleteAlert(taskName){
+  var alertString = "Task: " + taskName + " has already been maked complete today. Please refresh the page and check the task list again."
+  alert(alertString)
+}
 </script>
 
 </html>
