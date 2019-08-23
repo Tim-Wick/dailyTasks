@@ -75,10 +75,6 @@ function completeTask(row) {
   var date = Utilities.formatDate(fullDate, "PST", "MM/dd/yyyy"); // Pulls date from fullDate
   var time = Utilities.formatDate(fullDate, "PST", "HH:mm"); // Pulls hours/minutes from fullDate
   var task = currentTasks.getRange(row, 1, 1, 5).getDisplayValues(); // Gets values from the row that was checked
-   
-  if(checkAlreadyCompleted(task[0][1], date)){
-      alreadyCompleteAlert(task[0][1]);
-  } else{
   var onTime = isOnTime(task[0][0], time); // Runs the isOnTime function passing the time string from the row and the time variable, gets back no/yes
   var archArr = [date, task[0][1], user, task[0][0], time, onTime]; // Creates array to add to archiving sheet
   archive.insertRows(2); // Inserts a row at the top of the archive sheet. This way it doesn't matter how large the sheet gets, the scripts will only care about the first row and it is also easier to see recent jobs instead of scrolling
@@ -187,21 +183,4 @@ function isOnTime(timeDue, curTime){
   var onTime = "" // initializes a variable to describe if job is on time or not
   curTime > dueTime ? onTime = "No" : onTime = "Yes"; // Checks if the current time is larger than the task due time. If so sets onTime to "No"
   return onTime;
-}
-
-// Function to check if a task has already been completed on this day, each task is named uniquely (AM/PM for repeating tasks), therefore a check of the archive sheet for today will see if it has already been completed
-// Function takes in the taskName and the date
-// Function is called by completeTask, which already has pulled a date object and there is not need to replicate code. If function is reused elsewhere, make sure to generate a date object in the passing function to send to checkAlreadyCompleted
-
-function checkAlreadyCompleted(taskName, date) {
-  var lastTaskRow = taskList.getLastRow() // Gets the last row of the task list, this determines the max amount of jobs that could have been completed on this day, if the sheet grows, this number grows with it
-  var completeJobs = archive.getRange(2,1,(lastTaskRow-1),2).getDisplayValues() // Gets completed jobs up to the max that could have been completed on this day
-  var returnValue = false // Sets returnValue to false as default
-  for(i in completeJobs){ // Loops over the data gathered
-    if(completeJobs[i][1] == taskName && completeJobs[i][0] == date){
-      returnValue = true;
-      break
-    }
-  }
-  return returnValue
 }
